@@ -13,16 +13,16 @@ const mdFile = Bun.file(args.file);
 const PORT = 4076;
 
 try {
-  const mdContent = await mdFile.text();
   const filePath = mdFile.name!.split('/');
   
   console.log(`hosting '${filePath[filePath?.length-1]}' as slides at http://localhost:${PORT}/`);
 
   Bun.serve({
     port: PORT,
-    fetch(req) {
+    async fetch(req) {
       const url = new URL(req.url);
       if (url.pathname === "/") {
+        const mdContent = await mdFile.text();
 
         return new Response(renderDefault(mdContent), {
           headers: {
