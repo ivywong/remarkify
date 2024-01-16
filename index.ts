@@ -12,6 +12,11 @@ if (!Object.keys(args).includes('file') || args.file == true) {
 const mdFile = Bun.file(args.file);
 const PORT = 4076;
 
+if (!await mdFile.exists()) {
+  console.error(`error: ${mdFile.name} does not exist!`);
+  process.exit(1);
+}
+
 try {
   const filePath = mdFile.name!.split('/');
   
